@@ -9,7 +9,7 @@ import { api } from '../services/api'
 import {convertDurationToTimeString} from "../utils/convertDurationToTimeString";
 
 import styles from './home.module.scss'
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import {PlayerContext} from "../contexts/PlayerContext";
 
 type Episode = {
@@ -31,10 +31,15 @@ type HomeProps = {
 
 export default function Home({latestEpisodes, allEpisodes}: HomeProps) {
   const { playList, play } = useContext(PlayerContext)
+  const [clientSide, setClientSide] = useState(false)
 
   const episodeList = [...latestEpisodes, ...allEpisodes]
 
-  return (
+  useEffect(() => {
+    setClientSide(true)
+  }, [])
+  
+  return clientSide && (
     <div className={styles.homepage}>
       <Head>
         <title>Home | Podcastr</title>
@@ -51,11 +56,11 @@ export default function Home({latestEpisodes, allEpisodes}: HomeProps) {
                   height={192}
                   src={episode.thumbnail}
                   alt={episode.title}
-                  objectFit="cover" />
+                  style={{objectFit: 'cover'}} />
 
                 <div className={styles.episodeDetails}>
                   <Link href={`/episode/${episode.id}`}>
-                    <a>{episode.title}</a>
+                    {episode.title}
                   </Link>
                   <p>{episode.members}</p>
                   <span>{episode.publishedAt}</span>
@@ -92,11 +97,11 @@ export default function Home({latestEpisodes, allEpisodes}: HomeProps) {
                     height={128}
                     src={episode.thumbnail}
                     alt={episode.title}
-                    objectFit="cover"/>
+                    style={{objectFit: 'cover'}} />
                 </td>
                 <td>
                   <Link href={`/episode/${episode.id}`}>
-                    <a>{episode.title}</a>
+                    {episode.title}
                   </Link>
                 </td>
                 <td>{episode.members}</td>
@@ -148,7 +153,6 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       latestEpisodes,
       allEpisodes
-    },
-    revalidate: 60 * 60 * 24
+    }
   }
 }

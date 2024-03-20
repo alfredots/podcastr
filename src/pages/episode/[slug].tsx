@@ -42,7 +42,7 @@ export default function Episode({ episode }: EpisodeProps) {
             <img src="/arrow-left.svg" alt="voltar"/>
           </button>
         </Link>
-        <Image width={700} height={168} src={episode.thumbnail} objectFit="fill" />
+        <Image width={700} height={168} src={episode.thumbnail} alt="" style={{objectFit: 'fill'}} />
         <button type="button" onClick={() => play(episode)}>
           <img src="/play.svg" alt="Tocar episódio" />
         </button>
